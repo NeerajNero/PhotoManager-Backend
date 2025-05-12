@@ -4,6 +4,7 @@ import cors from "cors"
 import authRoutes from './routes/googleAuth.js'
 import { initializeDatabase } from "./db.connect/db.connect.js"
 import cookieParser from "cookie-parser"
+import imageRoutes from './routes/image.routes.js'
 
 const app = express()
 dotenv.config()
@@ -20,6 +21,7 @@ app.use(cors({
 }))
 
 app.use('/auth', authRoutes)
+app.use('/api', imageRoutes)
 
 app.listen(PORT, () => {
     console.log("Server is running on PORT",PORT)
