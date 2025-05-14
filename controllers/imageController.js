@@ -5,25 +5,27 @@ import path from 'path'
 export const uploadImage = async(req,res) => {
     try{
         const file = req.file
-        const {userId, imageName} = req.body
+        const userId = req?.body?.userId || null
+        const imageName = req?.body?.imageName || null
         if(!file || !userId || !imageName){
             return res.status(400).json({message: "ImageName, userId & file is required!"})
         }
        
         const fileSize = file.size
         const extension = path.extname(file.originalname).toLowerCase()
-
+        console.log(fileSize)
+        console.log(extension)
         if(fileSize > 5 * 1024 * 1024) {
             return res.status(400).json({ error: 'File too large. Max 5MB allowed.' });
         }
 
-        const allowedExt = ['jpg', 'jpeg', 'png', 'gif']
+        const allowedExt = ['.jpg', '.jpeg', '.png', '.gif']
         if(!allowedExt.includes(extension)){
              return res.status(400).json({ error: 'Invalid file type.' });
         }
         const imageRes = await cloudinary.uploader.upload(file?.path, {folder: "imageUploads"});
-
-        const newUpload = new Image({imageUrl: imageRes.secure_url, user: userId, fileSize, imageName})
+        console.log("after uploading to cloudinary")
+        const newUpload = new Image({imageUrl: imageRes.secure_url, user: userId, size: fileSize, imageName})
         const saveNewUpload = await newUpload.save()
 
         if(!saveNewUpload)  {
