@@ -38,4 +38,4 @@ const imageSchema = new mongoose.Schema({
     }
 },{timestamps: true})
 
-export default Image = mongoose.model('Image', imageSchema, "photoManagerFolder")
+export const Image = mongoose.model('Image', imageSchema, "photoManagerFolder")

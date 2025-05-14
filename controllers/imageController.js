@@ -1,4 +1,4 @@
-import Image from '../models/imageUrl.model.js'
+import {Image} from '../models/imageUrl.model.js'
 import cloudinary from '../config/cloudinary.config.js'
 import path from 'path'
 

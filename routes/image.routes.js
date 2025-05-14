@@ -1,7 +1,7 @@
 import { Router } from "express";
-import upload from "../middlewares/multerMiddleware";
-import { uploadImage } from "../controllers/imageController";
-import { authMiddleware } from "../middlewares/authMiddleware";
+import upload from "../middlewares/multerMiddleware.js";
+import { uploadImage } from "../controllers/imageController.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = Router()
 
