@@ -29,7 +29,7 @@ export const uploadImage = async(req,res) => {
         const saveNewUpload = await newUpload.save()
 
         if(!saveNewUpload)  {
-            return res.status(400).json({message: "unable to save image to DB!"})
+            return res.status(400).json({message: "unable to save image to DB!!"})
         }
         const imageData = await Image.findById(saveNewUpload._id).populate("user")
         res.status(201).json({message: "Image uploaded successfully", imageData})
