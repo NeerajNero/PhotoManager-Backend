@@ -12,7 +12,7 @@ export const googleAuth = async(req,res) => {
         res.status(500).json({error: "Internal server error", errorMessage: error.message})
     }
 } 
-// once code is recieved check and get userinfo and store it in DB.
+// once code is recieved check and get userinfo and store it in DB
 export const googleAuthCallback = async(req,res) => {
     const {code} = req.query
         if(!code){
