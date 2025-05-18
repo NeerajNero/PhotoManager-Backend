@@ -3,7 +3,7 @@ import axios from 'axios'
 import { User } from '../models/user.model.js'
 
 // to redirect here pass a link in frontend of the backend api containing google redirect link
-// first step create a google redirect then once redirected check code in next step
+// first step create a google redirect then once redirected check code in next step.
 export const googleAuth = async(req,res) => {
     try{
         res.redirect(`https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_AUTH_CLIENT_ID}&redirect_uri=http://localhost:${process.env.PORT}/auth/google/callback&response_type=code&scope=profile email`)
