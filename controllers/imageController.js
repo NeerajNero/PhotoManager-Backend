@@ -38,3 +38,20 @@ export const uploadImage = async(req,res) => {
         res.status(500).json({error: "internal server error", errorMessage: error.message})
     }
 }
+
+export const getImages = async(req,res) => {
+    try{
+        const {userId} = req.body
+        if(userId){
+            return res.status(400).json({error: "userid is required"})
+        }
+        const images = await Image.find({user: userId}).populate('user')
+        if(images.length === 0){
+            return res.status(404).json({message: "no images found"})
+        }
+        res.status(200).json({message: "fetched photos successfully", images})
+    }catch(error){
+        console.log("error occured while fetching images", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}
