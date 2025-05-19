@@ -41,11 +41,11 @@ export const uploadImage = async(req,res) => {
 
 export const getImages = async(req,res) => {
     try{
-        const {userId} = req.body
-        if(userId){
+        const {userId} = req?.query
+        if(!userId){
             return res.status(400).json({error: "userid is required"})
         }
-        const images = await Image.find({user: userId}).populate('user')
+        const images = await Image.find({user: userId}).populate("user")
         if(images.length === 0){
             return res.status(404).json({message: "no images found"})
         }
