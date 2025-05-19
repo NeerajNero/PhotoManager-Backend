@@ -49,7 +49,7 @@ export const getImages = async(req,res) => {
         if(images.length === 0){
             return res.status(404).json({message: "no images found"})
         }
-        res.status(200).json({message: "fetched photos successfully", images})
+        res.status(200).json({message: "fetched photos successfully!", images})
     }catch(error){
         console.log("error occured while fetching images", error.message)
         res.status(500).json({error: "internal server error", errorMessage: error.message})
