@@ -13,8 +13,6 @@ export const uploadImage = async(req,res) => {
        
         const fileSize = file.size
         const extension = path.extname(file.originalname).toLowerCase()
-        console.log(fileSize)
-        console.log(extension)
         if(fileSize > 5 * 1024 * 1024) {
             return res.status(400).json({ error: 'File too large. Max 5MB allowed.' });
         }
