@@ -56,8 +56,8 @@ export const getImages = async(req,res) => {
 
 export const deleteImage = async(req,res) => {
     try{
-        const {userId, imageId} = req?.query
-        const {id} = req?.user?.id
+        const {userId, imageId} = req.query
+        const {id} = req.user
         
         if(!userId || !imageId) {
             return res.status(400).json({error: "imageId and userId is required!"})

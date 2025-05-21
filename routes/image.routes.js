@@ -1,6 +1,6 @@
 import { Router } from "express";
 import upload from "../middlewares/multerMiddleware.js";
-import { uploadImage, getImages } from "../controllers/imageController.js";
+import { uploadImage, getImages, deleteImage, updateFavourite, addTags} from "../controllers/imageController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = Router()
