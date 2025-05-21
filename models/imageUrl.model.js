@@ -10,10 +10,10 @@ const imageSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    albumId: {
+    albumId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Album",
-    },
+    }],
     imageName: {
         type: String,
         required: true

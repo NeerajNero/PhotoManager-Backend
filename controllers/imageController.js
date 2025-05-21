@@ -53,3 +53,74 @@ export const getImages = async(req,res) => {
         res.status(500).json({error: "internal server error", errorMessage: error.message})
     }
 }
+
+export const deleteImage = async(req,res) => {
+    try{
+        const {userId, imageId} = req?.query
+        const {id} = req?.user?.id
+        
+        if(!userId || !imageId) {
+            return res.status(400).json({error: "imageId and userId is required!"})
+        }
+        const image = await Image.findById(imageId)
+
+        if(!image){
+            return res.status(400).json({error: "image not found!"})
+        }
+
+        if(image?._id !== id){
+            res.status(400).json({error: "user is not authenticated to perform this operation!"})
+        }
+        const performDelete = await Image.findByIdAndDelete(imageId)
+
+        if(!performDelete){
+            res.status(400).json({error: "unable to delete image"})
+        }
+        res.status(400).json({message: "image deleted successfully!"})
+    }catch(error){
+        console.log("error occured while deleting image", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}
+
+export const updateFavourite = async(req,res) => {
+    try{
+        const {imageId} = req?.body
+
+        if(!imageId) {
+            return res.status(400).json({error: "imageId is required!"})
+        }
+
+        const updateImageFavourite = await Image.findByIdAndUpdate(imageId, {$bit : {isFavorite: {xor : 1}}}, {new: true})
+
+        if(!updateImageFavourite){
+            return res.status(400).json({error: "unable to update favourite!"})
+        }
+
+        res.status(200).json({message: "status updated"})
+    }catch(error){
+        console.log("error occured while staring image", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}
+
+export const addTags = async(req,res) => {
+    try{
+        const {imageId} = req?.params
+        const {tag} = req?.body
+
+        if(!imageId || !tag){
+            return res.status(400).json({error: "imageId and tag is required!"})
+        }
+
+        const addTags = await Image.findByIdAndUpdate(imageId, {$push: {tags: tag}})
+        if(!addTags){
+            return res.status(400).json({error: "unable to add Tag!"})
+        }
+        res.status(200).json({message: "tag added successfully!"})
+    }catch(error){
+        console.log("error occured while adding tags", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}
+
