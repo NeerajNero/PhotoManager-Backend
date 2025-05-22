@@ -1,6 +1,6 @@
-import { Album } from "../models/album.model";
-import { Image } from "../models/imageUrl.model";
-import { User } from "../models/user.model";
+import { Album } from "../models/album.model.js";
+import { Image } from "../models/imageUrl.model.js";
+import { User } from "../models/user.model.js";
 
 export const createAlbum = async(req,res) => {
     try{

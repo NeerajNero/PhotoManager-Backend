@@ -1,6 +1,6 @@
 import {Router} from 'express'
-import { addComment } from '../controllers/commentController'
-import { authMiddleware } from '../middlewares/authMiddleware'
+import { addComment } from '../controllers/commentController.js'
+import { authMiddleware } from '../middlewares/authMiddleware.js'
 
 const router = Router()
 

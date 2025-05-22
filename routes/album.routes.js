@@ -1,6 +1,6 @@
 import {Router} from 'express'
-import { authMiddleware } from '../middlewares/authMiddleware'
-import { createAlbum, updateDescription, deleteAlbum, shareWithOthers } from '../controllers/albumController'
+import { authMiddleware } from '../middlewares/authMiddleware.js'
+import { createAlbum, updateDescription, deleteAlbum, shareWithOthers } from '../controllers/albumController.js'
 
 const router = Router()
 
