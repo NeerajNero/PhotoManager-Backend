@@ -5,13 +5,13 @@ import { User } from "../models/user.model.js";
 export const createAlbum = async(req,res) => {
     try{
         const {id} = req.user
-        const {albumName, description} = req.body
+        const {albumName, albumDescription} = req.body
 
-        if(!albumName || !description){
+        if(!albumName || !albumDescription){
             return res.status(400).json({error: "unable to create album"})
         }
 
-        const newAlbum = new Album({owner: id, albumName, description})
+        const newAlbum = new Album({owner: id, albumName, albumDescription})
         const saveNewAlbum = await newAlbum.save()
 
         if(!saveNewAlbum){
@@ -121,6 +121,21 @@ export const shareWithOthers = async(req,res) => {
         res.status(200).json({message: "image shared successfully!"})
     }catch(error){
         console.log("error occured while sharing album!", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}
+
+export const getAlbums = async(req,res) => {
+    try{    
+        const {id} = req.user
+        const albums = await Album.find({owner: id}).populate("owner", "-profilePicture")
+
+        if(albums.length === 0){
+            return res.status(404).json({error: "no albums found!"})
+        }
+        res.status(200).json({message: "albums fetched succesfully!", albums})
+    }catch(error){
+        console.log("error occured while fetching albums!", error.message)
         res.status(500).json({error: "internal server error", errorMessage: error.message})
     }
 }

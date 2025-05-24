@@ -10,7 +10,7 @@ const albumSchema = new mongoose.Schema({
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        res: "User",
+        ref: "User",
         required: true
     },
     sharedUser: [{
