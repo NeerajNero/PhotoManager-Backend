@@ -7,7 +7,7 @@ const router = Router()
 
 router.post('/upload',authMiddleware, upload.single('image'), uploadImage)
 router.get('/images',authMiddleware, getImages)
-router.delete('/image/:imageId', authMiddleware, deleteImage)
+router.delete('/image', authMiddleware, deleteImage)
 router.put('/image/:imageId/favourite', authMiddleware, updateFavourite)
 router.put('/image/:imageId', authMiddleware, addTags)
 

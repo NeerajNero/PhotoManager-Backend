@@ -11,7 +11,7 @@ export const authMiddleware = async(req,res,next) => {
         req.user = verifyToken
         next()
     }catch(error){
-        console.log(error.message)
+        console.log(error.message) 
         res.status(500).json({error: "internal server error", errorMessage: error.message})
     }
 }

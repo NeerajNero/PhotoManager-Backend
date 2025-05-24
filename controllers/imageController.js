@@ -10,22 +10,22 @@ export const uploadImage = async(req,res) => {
         if(!file || !userId || !imageName){
             return res.status(400).json({message: "ImageName, userId & file is required!"})
         }
-       
+        
         const fileSize = file.size
         const extension = path.extname(file.originalname).toLowerCase()
         if(fileSize > 5 * 1024 * 1024) {
             return res.status(400).json({ error: 'File too large. Max 5MB allowed.' });
         }
-
+        
         const allowedExt = ['.jpg', '.jpeg', '.png', '.gif']
         if(!allowedExt.includes(extension)){
              return res.status(400).json({ error: 'Invalid file type.' });
         }
+        
         const imageRes = await cloudinary.uploader.upload(file?.path, {folder: "imageUploads"});
-        console.log("after uploading to cloudinary")
-        const newUpload = new Image({imageUrl: imageRes.secure_url, user: userId, size: fileSize, imageName})
+        const newUpload = new Image({imageUrl: imageRes.secure_url, user: userId, size: fileSize, imageName, public_id: imageRes.public_id})
         const saveNewUpload = await newUpload.save()
-
+        
         if(!saveNewUpload)  {
             return res.status(400).json({message: "unable to save image to DB!!"})
         }
@@ -56,27 +56,28 @@ export const getImages = async(req,res) => {
 
 export const deleteImage = async(req,res) => {
     try{
-        const {userId, imageId} = req.query
+        const {imageId, public_id} = req.query
         const {id} = req.user
-        
-        if(!userId || !imageId) {
-            return res.status(400).json({error: "imageId and userId is required!"})
+        if(!imageId || !public_id) {
+            return res.status(400).json({error: "imageId and userId, public_id is required!"})
         }
         const image = await Image.findById(imageId)
-
+        
         if(!image){
             return res.status(400).json({error: "image not found!"})
         }
 
-        if(image?._id !== id){
+        if(image?.user.toString() !== id){
             res.status(400).json({error: "user is not authenticated to perform this operation!"})
         }
         const performDelete = await Image.findByIdAndDelete(imageId)
-
+        
         if(!performDelete){
             res.status(400).json({error: "unable to delete image"})
         }
-        res.status(400).json({message: "image deleted successfully!"})
+
+        await cloudinary.uploader.destroy(public_id)
+        res.status(200).json({message: "image deleted successfully!", imageId})
     }catch(error){
         console.log("error occured while deleting image", error.message)
         res.status(500).json({error: "internal server error", errorMessage: error.message})
