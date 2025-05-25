@@ -81,7 +81,7 @@ export const deleteAlbum = async(req,res) => {
             return res.status(400).json({error: "unable to delete album!"})
         }
             await Image.updateMany({albumId},{$pull: {albumId}})
-        res.status(200).json({message: "Album deleted successfully!"})
+        res.status(200).json({message: "Album deleted successfully!", albumId})
     }catch(error){
         console.log("error occured while deleting album!", error.message)
         res.status(500).json({error: "internal server error", errorMessage: error.message})

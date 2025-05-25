@@ -125,3 +125,51 @@ export const addTags = async(req,res) => {
     }
 }
 
+export const getAllImagesInAlbum = async(req,res) => {
+    try{
+        const {albumId} = req.params
+
+        if(!albumId){
+            return res.status(400).json({error: "albumId is required!"})
+        }
+        const images = await Image.find({albumId})
+        
+        if(images.length === 0){
+            return res.status(404).json({errorMessage: "no image found in album!"})
+        }
+        res.status(200).json({message: "Images fetched successfully", images})
+    }catch(error){
+        console.log("error occured while adding tags", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}
+
+export const addImageToAlbum = async(req,res) => {
+    try{
+        const {imageId, albumId} = req.params
+
+        if(!imageId || !albumId){
+            return res.status(400).json({error: "albumid and iamgeId is required!"})
+        }
+        const image = await Image.findById(imageId)
+        if(!image){
+            return res.status(400).json({error: "Image not found!"})
+        }
+
+        const alreadyExists = image.albumId.some((id) => id.toString() === albumId)
+
+        if(alreadyExists){
+            return res.status(400).json({error: "Image already has the albumId"})
+        }
+
+        const addImage = await Image.findByIdAndUpdate(imageId, {$addToSet: {albumId: albumId}}, {new: true})
+
+        if(!addImage){
+            return res.status(400).json({ error: "Unable to add image to album" })
+        }
+        res.status(200).json({message: "image addedd successfully", image: addImage, albumId})
+    }catch(error){
+        console.log("error occured while adding iamge to album", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}
