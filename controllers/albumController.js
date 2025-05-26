@@ -11,7 +11,7 @@ export const createAlbum = async(req,res) => {
             return res.status(400).json({error: "unable to create album"})
         }
 
-        const newAlbum = new Album({owner: id, albumName, albumDescription})
+        const newAlbum = new Album({owner: id, albumName, description: albumDescription})
         const saveNewAlbum = await newAlbum.save()
 
         if(!saveNewAlbum){
@@ -112,13 +112,16 @@ export const shareWithOthers = async(req,res) => {
             return res.status(403).json({error: "You dont have the permission to share this album with others"})
         }
 
+        if(album.sharedUser.includes(userEmail)){
+            return res.status(400).json({error: "Album is already shared with this user"})
+        }
         const shareAlbum = await Album.findByIdAndUpdate(albumId, {$addToSet: {sharedUser: userEmail}})
 
         if(!shareAlbum){
             return res.status(400).json({error: "error occured while sharing Album!"})
         }
 
-        res.status(200).json({message: "image shared successfully!"})
+        res.status(200).json({message: "image shared successfully!",albumData: {albumId, userEmail}})
     }catch(error){
         console.log("error occured while sharing album!", error.message)
         res.status(500).json({error: "internal server error", errorMessage: error.message})

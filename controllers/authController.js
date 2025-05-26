@@ -80,3 +80,17 @@ export const getUser = async(req,res) => {
         res.status(500).json({error: "internal server error", errorMessage: error.message})
     }
 }
+
+export const getAllUsers = async(req,res) => {
+    try{
+        const {id} = req.user
+        const users = await User.find({_id: {$ne: id}}).select("-profilePicture")
+        if(!users){
+            return res.status(404).json({error: "No user found"})
+        }
+        res.status(200).json({message: "users fetched successfully", users})
+    }catch(error){
+        console.log("error occured while fetching users", error.message)
+        res.status(500).json({error: "internal server error", errorMessage: error.message})
+    }
+}

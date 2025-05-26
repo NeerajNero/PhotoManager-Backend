@@ -7,7 +7,7 @@ const router = Router()
 router.post('/album', authMiddleware, createAlbum)
 router.delete('/album/:albumId', authMiddleware, deleteAlbum)
 router.put('/album/:albumId', authMiddleware, updateDescription)
-router.put('/album/:albumId/share', authMiddleware, shareWithOthers)
+router.patch('/album/:albumId/share', authMiddleware, shareWithOthers)
 router.get('/albums', authMiddleware, getAlbums)
 
 export default router
