@@ -15,7 +15,7 @@ export const createAlbum = async(req,res) => {
         const saveNewAlbum = await newAlbum.save()
 
         if(!saveNewAlbum){
-            return res.status(400).json({error: "unable to save album"})
+            return res.status(400).json({error: "unable to save album!"})
         }
 
         res.status(201).json({message: "album created successfully", album: saveNewAlbum})
