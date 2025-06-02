@@ -8,7 +8,7 @@ export const createAlbum = async(req,res) => {
         const {albumName, albumDescription} = req.body
 
         if(!albumName || !albumDescription){
-            return res.status(400).json({error: "unable to create album!"})
+            return res.status(400).json({error: "unable to create album!!"})
         }
 
         const newAlbum = new Album({owner: id, albumName, description: albumDescription})
